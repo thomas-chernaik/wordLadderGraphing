@@ -5,7 +5,8 @@
 def importWordsToDict(fileName):
     words = {}
     with open(fileName, "r") as myFile:
-        words[myFile.readline()] = []
+        for line in myFile:
+            words[line.strip()] = []
     return words
 
 def areWordsAdjacent(word1, word2):
@@ -24,13 +25,23 @@ def areWordsAdjacent(word1, word2):
     if len(word1) < len(word2):
         word1, word2 = word2, word1
     pastDiff = False
-    for i in range(len(word1)):
+    for i in range(len(word2)):
         if word1[i] != word2[i - pastDiff]:
             if pastDiff:
                 return False
             pastDiff = True
     return True
 
-def getAdajacentWords(dict, word):
-    for otherWord in dict.keys():
-        if(areWordsAdjacent(word, otherWord)):
+def getAdajacentWords(dict):
+    for word in dict.keys():
+        print(".")
+        for otherWord in dict.keys():
+            if(areWordsAdjacent(word, otherWord)):
+                dict[word].append(otherWord)
+
+def main():
+    dict = importWordsToDict("words.txt")
+    getAdajacentWords(dict)
+    print(dict)
+if __name__ == "__main__":
+    main()
